@@ -4,7 +4,7 @@ module Rsync
   # The result of a sync.
   class Result
     # Exit code returned by rsync
-    attr_accessor :exitcode
+    attr_accessor :exitcode, :raw
 
     # Error messages by exit code
     ERROR_CODES = {
@@ -27,7 +27,8 @@ module Rsync
       "24" => "Partial transfer due to vanished source files",
       "25" => "The --max-delete limit stopped deletions",
       "30" => "Timeout in data send/receive",
-      "35" => "Timeout waiting for daemon connection"
+      "35" => "Timeout waiting for daemon connection",
+      "255" => "Connection timed out"
     }
 
     # @!visibility private
@@ -48,6 +49,8 @@ module Rsync
       error_key = @exitcode.to_s
       if ERROR_CODES.has_key? error_key
         ERROR_CODES[error_key]
+      elsif @raw =~ /Permission denied \(publickey\)/
+        "Permission denied (publickey)"
       else
         "Unknown Error"
       end
@@ -66,7 +69,7 @@ private
       list = []
       @raw.split("\n").each do |line|
         #if line =~ /^([<>ch.*][fdLDS][ .+\?cstTpoguax]{9}) (.*)$/
-        if line =~ /^([<>ch+\.\*].{10}) (.*)$/
+        if line =~ /^([<>ch+\.\*].{8,12}) (.*)$/
           detail = Change.new(line)
           list << detail if detail.changed?
         end

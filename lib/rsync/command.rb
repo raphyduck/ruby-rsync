@@ -24,6 +24,7 @@ module Rsync
 private
 
     def self.run_command(cmd, &block)
+      puts "Running: #{cmd}"
       if block_given?
         IO.popen("#{cmd} 2>&1", &block)
       else
