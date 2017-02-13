@@ -9,7 +9,9 @@ module Rsync
     # @param args {Array}
     # @return {Result}
     def self.run(*args)
-      output = run_command([command, "--itemize-changes", args].flatten.shelljoin)
+      output = run_command([command, "--itemize-changes",
+        '-e', '/usr/bin/ssh -o StrictHostKeyChecking=no -o "NumberOfPasswordPrompts 0"',
+        args].flatten.shelljoin)
       Result.new(output, $?.exitstatus)
     end
 
