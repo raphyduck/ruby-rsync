@@ -16,7 +16,7 @@ module Rsync
     end
 
     def self.command
-      @command ||= "rsync -e 'ssh -o StrictHostKeyChecking=no -o \"NumberOfPasswordPrompts 0\"'"
+      @command ||= 'rsync'
     end
 
     def self.command=(cmd)
