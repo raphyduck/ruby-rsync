@@ -52,7 +52,7 @@ module Rsync
       elsif @raw =~ /Permission denied \(publickey\)/
         "Permission denied (publickey)"
       else
-        "Unknown Error"
+        "Unknown Error: #{@raw}"
       end
     end
 
