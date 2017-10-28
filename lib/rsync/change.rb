@@ -16,7 +16,7 @@ module Rsync
     # The filename associated with this change.
     # @return [String]
     def filename
-      _, filename = @data.split(' ')
+      _, filename = @data#.split(' ')
       filename
     end
 
